@@ -1,20 +1,16 @@
 <script>
-  import '../app.css'
+  import '../app.css';
   import { API_URL } from '$lib';
+  import ThemeButton from '$lib/components/ThemeButton.svelte';
 
-  let errorText = ''
-  let email = ''
+  let errorText = $state('');
+  let email = $state('');
 
   const login = (key) => {
     if (key == 'Enter') {
-      // Email regex
-      if (/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(email)) {
-        console.log('send to backend')
-      } else {
-        errorText = 'Please enter a valid email'
-      }
+      console.log('send to backend');
     } else {
-      errorText = ''
+      errorText = '';
     }
   }
 </script>
@@ -22,24 +18,24 @@
 <svelte:head>
   <title>Home</title> 
 </svelte:head>
-
-<div class='flex flex-col items-center justify-center h-dvh gap-5'>
+<ThemeButton></ThemeButton>
+<div class='flex flex-col items-center justify-center h-dvh gap-y-5'>
   <h1 class='text-5xl'>
     Name that I'm too lazy to think of
   </h1>
   <p>
     An app to track your manga reading progress
   </p>
-
-  <input
+  
+  <form class='flex flex-col items-center gap-y-2'>
+    <input
     id='login_input'
     type='text'
-    class='input text-center'
-    placeholder='Enter your email to get started'
+    class='input text-center w-100'
+    placeholder='Enter a new or existing username'
     bind:value = {email}
-    on:keydown={k => login(k.key)}
+    onkeydown={k => login(k.key)}
   >
-  <label for='login_input'>{errorText}</label>
+    <label for='login_input' class='text-error'>{errorText}</label>
+</form>
 </div>
-
-
