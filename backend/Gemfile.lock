@@ -1,0 +1,36 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ffi (1.17.1)
+    ffi (1.17.1-x86_64-linux-gnu)
+    listen (3.9.0)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
+    mysql2 (0.5.6)
+    nio4r (2.7.4)
+    puma (6.6.0)
+      nio4r (~> 2.0)
+    rack (3.1.12)
+    rackup (2.2.1)
+      rack (>= 3)
+    rb-fsevent (0.11.2)
+    rb-inotify (0.11.1)
+      ffi (~> 1.0)
+    rerun (0.14.0)
+      listen (~> 3.0)
+    roda (3.90.0)
+      rack
+
+PLATFORMS
+  ruby
+  x86_64-linux
+
+DEPENDENCIES
+  mysql2
+  puma
+  rackup
+  rerun
+  roda
+
+BUNDLED WITH
+   2.6.7
