@@ -1,14 +1,20 @@
 <script>
   import '../app.css';
-  import { API_URL } from '$lib';
+  import { API_URL, HEADERS } from '$lib';
   import ThemeButton from '$lib/components/ThemeButton.svelte';
 
   let errorText = $state('');
-  let email = $state('');
+  let username = $state('');
 
   const login = (key) => {
     if (key == 'Enter') {
-      console.log('send to backend');
+      fetch(`http://${API_URL}/register`, {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify({
+          username: username
+        })
+      });
     } else {
       errorText = '';
     }
@@ -32,8 +38,8 @@
     id='login_input'
     type='text'
     class='input text-center w-100'
-    placeholder='Enter a new or existing username'
-    bind:value = {email}
+    placeholder='Enter a new username'
+    bind:value = {username}
     onkeydown={k => login(k.key)}
   >
     <label for='login_input' class='text-error'>{errorText}</label>
