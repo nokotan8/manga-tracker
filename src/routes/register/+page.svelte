@@ -31,6 +31,7 @@
 <svelte:head>
     <title>Register</title> 
 </svelte:head>
+
 <div class='flex flex-col justify-center items-center h-dvh gap-y-4'>
   <h1 class='text-4xl'> Register </h1>
   <form class='flex flex-col items-center'>

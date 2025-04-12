@@ -10,17 +10,15 @@
 
   let currTheme = $state(browser && localStorage.getItem('theme') || THEMES.LIGHT);
 
-  onMount(() => {
-    if (!localStorage.getItem('theme')) {
-      localStorage.setItem('theme', currTheme);
+  $effect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', currTheme)
+      document.documentElement.setAttribute('data-theme', currTheme)
     }
-    document.documentElement.setAttribute('data-theme', currTheme)
-  });
+  })
 
   const toggleTheme = () => {
-    currTheme = currTheme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT
-    localStorage.setItem('theme', currTheme)
-		document.documentElement.setAttribute('data-theme', currTheme)
+    currTheme = (currTheme === THEMES.LIGHT) ? THEMES.DARK : THEMES.LIGHT
   }
 </script>
 
