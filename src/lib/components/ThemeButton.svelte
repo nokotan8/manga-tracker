@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import '../../app.css'
   import { browser } from '$app/environment'
-
+  
   const THEMES = {
     LIGHT: 'winter',
     DARK: 'night',

@@ -19,9 +19,3 @@
 
 <ThemeButton></ThemeButton>
 {@render children()}
-
-<style>
-	::view-transition-new(root) {
-		animation-duration: 0.15s;
-	}
-</style>
