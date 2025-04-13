@@ -2,20 +2,21 @@
   /** @type {{ data: import('./$types').PageData }} */
   import { API_URL, HEADERS } from '$lib';
   import { goto } from '$app/navigation';
-  import { userState } from '../../userState.svelte';
+  import { username, accountNum } from '../../../stores/userState';
   import axios from 'axios';
 
   let { data } = $props();
 
   let errorText = $state('');
-  let username = $state('');
+  let givenUsername = $state('');
 
   const register = async () => {
     try {
-      const res = await axios.post(`http://${API_URL}/auth/register`, { username: username }, { headers: HEADERS });
+      const res = await axios.post(`http://${API_URL}/auth/register`, { username: givenUsername }, { headers: HEADERS });
 
-      userState.username = username;
-      userState.accNum = res.data.acc_num;
+      username.set(givenUsername);
+      accountNum.set(res.data.acc_num);
+
       goto('/home')
     } catch (error) {
       errorText = error.response.data.msg;
@@ -42,7 +43,7 @@
       type='text'
       class='input text-center w-100'
       placeholder='Enter a new username'
-      bind:value = {username} 
+      bind:value = {givenUsername} 
       onkeydown={k => register_input(k.key)}
     >
     <label for='register_input' class='text-error'>{errorText}</label>
