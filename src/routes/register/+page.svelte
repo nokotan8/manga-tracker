@@ -1,22 +1,22 @@
 <script>
   /** @type {{ data: import('./$types').PageData }} */
-  import { API_URL, HEADERS } from '$lib';
+  import { API_URL } from '$lib';
+  import axios from 'axios';
+
   let { data } = $props();
 
   let errorText = $state('');
   let username = $state('');
 
   const register = async () => {
-    let res = await fetch(`http://${API_URL}/register`, {
-      method: 'POST',
-      headers: HEADERS,
-      body: JSON.stringify({
-        username: username
-      })
-    });
-    res = await res.json()
-    if (!res.acc_num) {
-      errorText = res.msg;
+    try {
+      const res = await axios.post(`http://${API_URL}/auth/register`, { username: username }, {
+        headers: {
+          'Accept': 'application/json'    
+        }
+      });
+    } catch (error) {
+      errorText = error.response.data.msg;
     }
   }
 
