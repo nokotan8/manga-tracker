@@ -1,19 +1,21 @@
 <script>
     /** @type {{ data: import('./$types').PageData }} */
-    import { API_URL } from '$lib';
+    import { API_URL, HEADERS } from '$lib';
+    import { goto } from '$app/navigation';
+    import { username, accountNum } from '../../../stores/userState';
     import axios from 'axios';
 
     let { data } = $props();
-    let acc_num = $state('')
+    let accNum = $state('')
     let errorText = $state('')
 
     const login = async () => {
       try {
-        const res = await axios.post(`http://${API_URL}/auth/login`, { acc_num: acc_num }, {
-          headers: {
-            'Accept': 'application/json'    
-          }
-        });
+        const res = await axios.post(`http://${API_URL}/auth/login`, { acc_num: accNum }, { headers: HEADERS });
+        username.set(res.data.username);
+        accountNum.set(accNum);
+
+        goto('/home')
       } catch (error) {
         errorText = error.response.data.msg;
       }
@@ -38,7 +40,7 @@
       type='password'
       class='input text-center w-100'
       placeholder='Account Number'
-      bind:value = {acc_num}
+      bind:value = {accNum}
       onkeydown={k => login_input(k.key)}
     >
     <label for='login_input' class='text-error' >{errorText}</label>

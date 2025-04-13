@@ -1,7 +1,6 @@
 <script>
   import '../app.css';
 	import { onNavigate } from '$app/navigation';
-	import ThemeButton from '$lib/components/ThemeButton.svelte';
 	let { children } = $props();
 
 	// View transitions. Only works on Chromium for now
@@ -17,5 +16,4 @@
 	});
 </script>
 
-<ThemeButton></ThemeButton>
 {@render children()}

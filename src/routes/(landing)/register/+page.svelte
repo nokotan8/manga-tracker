@@ -1,6 +1,8 @@
 <script>
   /** @type {{ data: import('./$types').PageData }} */
-  import { API_URL } from '$lib';
+  import { API_URL, HEADERS } from '$lib';
+  import { goto } from '$app/navigation';
+  import { userState } from '../../userState.svelte';
   import axios from 'axios';
 
   let { data } = $props();
@@ -10,11 +12,11 @@
 
   const register = async () => {
     try {
-      const res = await axios.post(`http://${API_URL}/auth/register`, { username: username }, {
-        headers: {
-          'Accept': 'application/json'    
-        }
-      });
+      const res = await axios.post(`http://${API_URL}/auth/register`, { username: username }, { headers: HEADERS });
+
+      userState.username = username;
+      userState.accNum = res.data.acc_num;
+      goto('/home')
     } catch (error) {
       errorText = error.response.data.msg;
     }
