@@ -1,12 +1,19 @@
 <script>
+  import { goto } from "$app/navigation";
+	import { browser } from "$app/environment";
 	import ThemeButton from "$lib/components/ThemeButton.svelte";
 	import { username } from "../../stores/userState";
+  import { logout } from "$lib";
 	let { children } = $props();
+
+	if (browser && !localStorage.getItem('username')) {
+		logout();
+	}
 </script>
 
 <nav class='navbar bg-base-100 shadow-sm' >
   <div role='tablist' class='flex-1'>
-    <a role='tab' class='tab'>All Manga</a>
+    <a href='/home/all' role='tab' class='tab'>All Manga</a>
     <a role='tab' class='tab'>Reading</a>
     <a role='tab' class='tab'>Finished</a>
   </div>
