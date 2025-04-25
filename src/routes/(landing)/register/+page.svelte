@@ -1,53 +1,72 @@
 <script>
-  /** @type {{ data: import('./$types').PageData }} */
-  import { API_URL, HEADERS } from '$lib';
-  import { goto } from '$app/navigation';
-  import { username, accountNum } from '../../../stores/userState';
-  import axios from 'axios';
+    /** @type {{ data: import('./$types').PageData }} */
+    import { API_URL, HEADERS } from "$lib";
+    import { goto } from "$app/navigation";
+    import { token, username } from "../../../stores/userState";
+    import axios from "axios";
 
-  let { data } = $props();
+    let { data } = $props();
 
-  let errorText = $state('');
-  let givenUsername = $state('');
+    let errorText = $state("");
+    let givenUsername = $state("");
+    let givenPwd = $state("");
+    let givenPwdConfirm = $state("");
 
-  const register = async () => {
-    try {
-      const res = await axios.post(`http://${API_URL}/auth/register`, { username: givenUsername }, { headers: HEADERS });
+    const register = async () => {
+        if (givenPwd.localeCompare(givenPwdConfirm)) {
+            errorText = "Passwords do not match";
+            return;
+        }
 
-      username.set(givenUsername);
-      accountNum.set(res.data.acc_num);
+        try {
+            const res = await axios.post(
+                `http://${API_URL}/auth/register`,
+                { username: givenUsername, password: givenPwd },
+                { headers: HEADERS },
+            );
 
-      goto('/home')
-    } catch (error) {
-      errorText = error.response.data.msg;
-    }
-  }
+            username.set(givenUsername);
+            token.set(res.data.token);
 
-  const register_input = (key) => {
-    if (key == 'Enter') {
-      register();
-    }
-  }
-
+            goto("/home");
+        } catch (error) {
+            if (error.response) {
+                errorText = error.response.data.msg;
+            } else {
+                errorText = "Something went wrong";
+            }
+        }
+    };
 </script>
 
 <svelte:head>
-    <title>Register</title> 
+    <title>Register</title>
 </svelte:head>
 
-<div class='flex flex-col justify-center items-center h-dvh gap-y-4'>
-  <h1 class='text-4xl'> Register </h1>
-  <form class='flex flex-col items-center'>
-    <input
-      id='register_input'
-      type='text'
-      class='input text-center w-100'
-      placeholder='Enter a new username'
-      bind:value = {givenUsername} 
-      onkeydown={k => register_input(k.key)}
-    >
-    <label for='register_input' class='text-error'>{errorText}</label>
-  </form>
-  <button class='btn' onclick={register}>Register</button>
-  <a href='/login' class='btn'>Login Instead</a>
+<div class="flex flex-col justify-center items-center h-dvh gap-y-4">
+    <h1 class="text-4xl">Register</h1>
+    <form class="flex flex-col items-center gap-y-3">
+        <input
+            id="login_input"
+            type="text"
+            class="input text-center w-100"
+            placeholder="Username"
+            bind:value={givenUsername}
+        />
+        <input
+            type="password"
+            class="input text-center w-100"
+            placeholder="Password"
+            bind:value={givenPwd}
+        />
+        <input
+            type="password"
+            class="input text-center w-100"
+            placeholder="Confirm Password"
+            bind:value={givenPwdConfirm}
+        />
+        <label for="register_input" class="text-error">{errorText}</label>
+        <button class="btn" onclick={register}>Register</button>
+    </form>
+    <a href="/login" class="btn mt-0">Login Instead</a>
 </div>

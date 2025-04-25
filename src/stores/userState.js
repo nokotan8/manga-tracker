@@ -2,15 +2,16 @@ import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 
 const storedUsername = browser && localStorage.getItem('username');
-const storedAccNum = browser && localStorage.getItem('accNum')
+const storedToken = browser && localStorage.getItem('token');
 
 export const username = writable(storedUsername || '');
-export const accountNum = writable(storedAccNum || '');
+export const token = writable(storedToken || '');
 
 username.subscribe(value => {
   browser && localStorage.setItem('username', value);
 });
 
- accountNum.subscribe(value => {
-  browser && localStorage.setItem('accNum', value)
-})
+token.subscribe(value => {
+  browser && localStorage.setItem('token', value);
+});
+
