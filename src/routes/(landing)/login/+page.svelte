@@ -1,4 +1,9 @@
 <script>
+    import { API_URL, HEADERS } from "$lib";
+    import { goto } from "$app/navigation";
+    import { token, username } from "../../../stores/userState";
+    import axios from "axios";
+
     let { data } = $props();
     let givenUsername = $state("");
     let givenPwd = $state("");

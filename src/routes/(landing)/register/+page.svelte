@@ -43,30 +43,30 @@
     <title>Register</title>
 </svelte:head>
 
-<div class="flex flex-col justify-center items-center h-dvh gap-y-4">
+<div class="flex flex-col gap-y-4 justify-center items-center h-dvh">
     <h1 class="text-4xl">Register</h1>
-    <form class="flex flex-col items-center gap-y-3">
+    <form class="flex flex-col gap-y-3 items-center">
         <input
-            id="login_input"
+            id="register_input"
             type="text"
-            class="input text-center w-100"
+            class="text-center input w-100"
             placeholder="Username"
             bind:value={givenUsername}
         />
         <input
             type="password"
-            class="input text-center w-100"
+            class="text-center input w-100"
             placeholder="Password"
             bind:value={givenPwd}
         />
         <input
             type="password"
-            class="input text-center w-100"
+            class="text-center input w-100"
             placeholder="Confirm Password"
             bind:value={givenPwdConfirm}
         />
         <label for="register_input" class="text-error">{errorText}</label>
         <button class="btn" onclick={register}>Register</button>
     </form>
-    <a href="/login" class="btn mt-0">Login Instead</a>
+    <a href="/login" class="mt-0 btn">Login Instead</a>
 </div>
