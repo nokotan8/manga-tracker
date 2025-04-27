@@ -1,9 +1,9 @@
 <script>
     let { data } = $props();
-    let givenUsername = $state('');
-    let givenPwd = $state('');
-    let givenPwdConfirm = $state('');
-    let errorText = $state('');
+    let givenUsername = $state("");
+    let givenPwd = $state("");
+    let givenPwdConfirm = $state("");
+    let errorText = $state("");
 
     const login = async () => {
         try {
@@ -16,12 +16,12 @@
             username.set(givenUsername);
             token.set(res.data.token);
 
-            goto('/home');
+            goto("/home");
         } catch (error) {
             if (error.response) {
                 errorText = error.response.data.errors[0];
             } else {
-                errorText = 'Something went wrong';
+                errorText = "Something went wrong";
             }
         }
     };
