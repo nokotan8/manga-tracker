@@ -1,12 +1,12 @@
 <script>
-    import { goto } from "$app/navigation";
-    import { browser } from "$app/environment";
-    import ThemeButton from "$lib/components/ThemeButton.svelte";
-    import { username } from "../../stores/userState";
-    import { logout } from "$lib";
+    import { goto } from '$app/navigation';
+    import { browser } from '$app/environment';
+    import ThemeButton from '$lib/components/ThemeButton.svelte';
+    import { username } from '../../stores/userState';
+    import { logout } from '$lib';
     let { children } = $props();
 
-    if (browser && !localStorage.getItem("username")) {
+    if (browser && !localStorage.getItem('username')) {
         logout();
     }
 </script>

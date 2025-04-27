@@ -7,11 +7,10 @@ const storedToken = browser && localStorage.getItem('token');
 export const username = writable(storedUsername || '');
 export const token = writable(storedToken || '');
 
-username.subscribe(value => {
-  browser && localStorage.setItem('username', value);
+username.subscribe((value) => {
+    browser && localStorage.setItem('username', value);
 });
 
-token.subscribe(value => {
-  browser && localStorage.setItem('token', value);
+token.subscribe((value) => {
+    browser && localStorage.setItem('token', value);
 });
-
