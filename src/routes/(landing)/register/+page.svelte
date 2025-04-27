@@ -31,7 +31,7 @@
             goto("/home");
         } catch (error) {
             if (error.response) {
-                errorText = error.response.data.msg;
+                errorText = error.response.data.errors[0];
             } else {
                 errorText = "Something went wrong";
             }
