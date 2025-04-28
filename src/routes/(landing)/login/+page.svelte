@@ -4,10 +4,8 @@
     import { token, username } from "../../../stores/userState";
     import axios from "axios";
 
-    let { data } = $props();
     let givenUsername = $state("");
     let givenPwd = $state("");
-    let givenPwdConfirm = $state("");
     let errorText = $state("");
 
     const login = async () => {
