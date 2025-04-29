@@ -1,5 +1,4 @@
-<script>
-    import { onMount } from "svelte";
+<script lang="ts">
     import "../../app.css";
     import { browser } from "$app/environment";
 
@@ -8,9 +7,7 @@
         DARK: "night",
     };
 
-    let currTheme = $state(
-        (browser && localStorage.getItem("theme")) || THEMES.DARK,
-    );
+    let currTheme = $state((browser && localStorage.getItem("theme")) || THEMES.DARK);
 
     $effect(() => {
         if (typeof window !== "undefined") {
@@ -25,15 +22,11 @@
 </script>
 
 <label class={`swap swap-rotate`}>
-    <input
-        type="checkbox"
-        onclick={toggleTheme}
-        checked={currTheme === THEMES.DARK}
-    />
+    <input type="checkbox" onclick={toggleTheme} checked={currTheme === THEMES.DARK} />
 
     <!-- sun icon -->
     <svg
-        class="swap-on h-6.5 w-6.5 fill-current"
+        class="fill-current swap-on h-6.5 w-6.5"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 26 26"
     >
@@ -44,7 +37,7 @@
 
     <!-- moon icon -->
     <svg
-        class="swap-off h-6.5 w-6.5 fill-current"
+        class="fill-current swap-off h-6.5 w-6.5"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 26 26"
     >

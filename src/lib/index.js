@@ -7,6 +7,6 @@ export const HEADERS = {
 
 export const logout = () => {
     localStorage.setItem("username", "");
-    localStorage.setItem("accNum", "");
+    localStorage.setItem("token", "");
     goto("/");
 };

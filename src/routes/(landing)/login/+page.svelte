@@ -8,6 +8,7 @@
     let givenPwd = $state("");
     let errorText = $state("");
 
+
     const login = async () => {
         try {
             const res = await axios.post(
@@ -51,7 +52,7 @@
             bind:value={givenPwd}
         />
         <label for="login_input" class="my-2 text-error">{errorText}</label>
-        <button class="btn" type="submit">Login</button>
+        <button class="btn btn-neutral" type="submit">Login</button>
     </form>
-    <a href="/register" class="btn">Register Instead</a>
+    <a href="/register" class="btn btn-neutral">Register Instead</a>
 </div>

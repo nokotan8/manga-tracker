@@ -9,8 +9,11 @@ export const token = writable(storedToken || "");
 
 username.subscribe((value) => {
     browser && localStorage.setItem("username", value);
+    // If you don't read it chrome won't save it???
+    browser && localStorage.getItem("username");
 });
 
 token.subscribe((value) => {
     browser && localStorage.setItem("token", value);
+    browser && localStorage.getItem("token");
 });

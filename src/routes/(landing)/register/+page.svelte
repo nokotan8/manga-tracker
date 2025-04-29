@@ -64,7 +64,7 @@
             bind:value={givenPwdConfirm}
         />
         <label for="register_input" class="text-error">{errorText}</label>
-        <button class="btn" onclick={register}>Register</button>
+        <button class="btn btn-neutral" onclick={register}>Register</button>
     </form>
-    <a href="/login" class="mt-0 btn">Login Instead</a>
+    <a href="/login" class="mt-0 btn btn-neutral">Login Instead</a>
 </div>
