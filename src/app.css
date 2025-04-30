@@ -15,10 +15,5 @@
 
 #pages > * {
     @apply h-full bg-base-100 border-base-100;
-    border-radius: 0%;
     margin: 0;
-}
-
-#pages [data-active="true"] {
-    @apply border-b-secondary border-base-300 border-3 bg-base-300;
 }

@@ -10,8 +10,8 @@
         // logout();
     }
 
-    const isActive = (path: string): Boolean => {
-        return page.url.pathname.includes(path);
+    const isActive = (path: string): "tab-active" | "" => {
+        return page.url.pathname.includes(path) ? "tab-active" : "";
     };
 </script>
 
@@ -44,25 +44,23 @@
         </div>
         <h1 class="text-xl">Cool logo idk</h1>
     </div>
-    <div id="pages" class="hidden h-full md:flex navbar-center">
-        <a href="/mangalist" class="btn" data-active={isActive("/mangalist")}>Manga List</a>
-        <a href="/search" class="btn" data-active={isActive("/search")}>Browse</a>
-        <a href="/vocab" class="btn" data-active={isActive("/vocab")}>Vocabulary</a>
+    <div id="pages" class="hidden h-full md:flex tabs tabs-border navbar-center">
+        <a href="/mangalist" class={"tab " + isActive("/mangalist")}>Manga List</a>
+        <a href="/search" class={"tab " + isActive("/search")}>Browse</a>
+        <a href="/vocab" class="tab" data-active={isActive("/vocab")}>Vocabulary</a>
     </div>
-    <div class="navbar-end">
-        <ul class="px-1 menu menu-horizontal">
-            <li>
-                <details>
-                    <summary>{$username}</summary>
-                    <ul class="p-2 rounded-t-none bg-base-100">
-                        <li><a>Profile</a></li>
-                        <li><button onclick={logout}>Logout</button></li>
-                    </ul>
-                </details>
-            </li>
-        </ul>
-        <ThemeButton></ThemeButton>
-    </div>
+    <ul class="px-1 navbar-end menu menu-horizontal">
+        <li>
+            <details>
+                <summary>{$username}</summary>
+                <ul class="p-2 rounded-t-none bg-base-100">
+                    <li><a>Profile</a></li>
+                    <li><button onclick={logout}>Logout</button></li>
+                </ul>
+            </details>
+        </li>
+    </ul>
+    <ThemeButton></ThemeButton>
 </nav>
 
 {@render children()}
