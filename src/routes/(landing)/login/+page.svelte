@@ -8,7 +8,6 @@
     let givenPwd = $state("");
     let errorText = $state("");
 
-
     const login = async () => {
         try {
             const res = await axios.post(
@@ -21,7 +20,7 @@
             token.set(res.data.token);
 
             goto("/home");
-        } catch (error) {
+        } catch (error: any) {
             if (error.response) {
                 errorText = error.response.data.errors[0];
             } else {
