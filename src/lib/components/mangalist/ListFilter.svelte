@@ -29,7 +29,7 @@
             <li>
                 <details open>
                     <summary>Your Lists</summary>
-                    <ul>
+                    <ul class="overflow-scroll max-h-[50vh]">
                         {#each lists as list}
                             <li>
                                 <a
@@ -42,7 +42,12 @@
                     </ul>
                 </details>
             </li>
-            <button class="w-full btn btn-sm">
+            <li>
+                <a href="/mangalist/dropped" class={listActive("dropped")}
+                    >Dropped</a
+                >
+            </li>
+            <button class="mt-1 w-full btn btn-sm btn-neutral">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"

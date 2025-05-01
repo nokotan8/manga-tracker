@@ -1,24 +1,24 @@
 class Manga {
-    nameEN: string;
+    titleEN: string;
     genres: string[];
     authorEN: string;
     status: string;
     numVols: number;
     numChaps: number;
-    nameJP?: string;
+    titleJP?: string;
     authorJP?: string;
     constructor(
-        nameEN: string,
+        titleEN: string,
         authorEN: string,
         genres: string[],
         status: string,
         numVols: number,
         numChaps: number,
-        nameJP?: string,
+        titleJP?: string,
         authorJP?: string,
     ) {
-        this.nameEN = nameEN;
-        this.nameJP = nameJP;
+        this.titleEN = titleEN;
+        this.titleJP = titleJP;
         this.genres = genres;
         this.authorEN = authorEN;
         this.authorJP = authorJP;
@@ -34,7 +34,7 @@ class UserManga extends Manga {
     lists: string[];
     rating?: number;
     constructor(
-        nameEN: string,
+        titleEN: string,
         genres: string[],
         authorEN: string,
         status: string,
@@ -43,18 +43,18 @@ class UserManga extends Manga {
         currVols: number,
         currChaps: number,
         lists: string[],
-        nameJP?: string,
+        titleJP?: string,
         authorJP?: string,
         rating?: number,
     ) {
         super(
-            nameEN,
+            titleEN,
             authorEN,
             genres,
             status,
             numVols,
             numChaps,
-            nameJP,
+            titleJP,
             authorJP,
         );
         this.rating = rating;
@@ -95,7 +95,7 @@ const testManga2: UserManga = new UserManga(
     10,
 );
 testMangas.push(testManga, testManga2);
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 30; i++) {
     testMangas.push(testManga);
 }
 

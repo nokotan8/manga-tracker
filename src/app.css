@@ -6,14 +6,33 @@
 }
 
 * {
-    transition: background-color 0.15s, border-color 0.15s;
+    transition:
+        background-color 0.15s,
+        border-color 0.15s;
 }
 
 /* ::view-transition-new(root) { */
-    /* animation-duration: 0.15s; */
+/* animation-duration: 0.15s; */
 /* } */
 
 #pages > * {
     @apply h-full bg-base-100 border-base-100;
     margin: 0;
+}
+
+.btn {
+    @apply shadow-sm;
+}
+
+/* Remove arrows from number input because they look bad */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
 }
