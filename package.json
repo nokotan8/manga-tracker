@@ -7,7 +7,9 @@
         "dev": "vite dev",
         "build": "vite build",
         "preview": "vite preview",
-        "prepare": "svelte-kit sync || echo ''"
+        "prepare": "svelte-kit sync || echo ''",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
     },
     "devDependencies": {
         "@sveltejs/adapter-auto": "^4.0.0",
@@ -16,6 +18,7 @@
         "@tsconfig/svelte": "^5.0.4",
         "globals": "^16.0.0",
         "svelte": "^5.28.2",
+        "svelte-check": "^4.1.6",
         "vite": "^6.2.5"
     },
     "dependencies": {
