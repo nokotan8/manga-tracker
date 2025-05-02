@@ -36,3 +36,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
+.modal-box {
+    max-width: 80vw;
+}
