@@ -1,6 +1,7 @@
 <script lang="ts">
     import { page } from "$app/state";
     import { testMangas } from "$lib/classes/Manga";
+    import AddMangaModal from "$lib/components/mangalist/AddMangaModal.svelte";
     import ListFilter from "$lib/components/mangalist/ListFilter.svelte";
     import MangaTable from "$lib/components/mangalist/MangaTable.svelte";
     const lists = $state(["List 1", "List 2", "List 3"]);
@@ -34,7 +35,7 @@
 
 <svelte:window onkeydown={handleKeyDown} />
 <div class="flex flex-col justify-center items-center py-10 px-25">
-    <div class="max-w-600">
+    <div class="">
         <div class="flex flex-row justify-between">
             <button
                 class="btn btn-neutral"
@@ -73,85 +74,7 @@
         <div class="flex flex-row gap-5 justify-start pt-2.5">
             <ListFilter {lists} {currList}></ListFilter>
             <MangaTable {dispMangas}></MangaTable>
+            <AddMangaModal {lists} {addMangaModalOpen}></AddMangaModal>
         </div>
-        <dialog class={"modal" + (addMangaModalOpen ? " modal-open" : "")}>
-            <div class="flex flex-col gap-y-2 modal-box">
-                <div class="flex flex-row gap-x-8">
-                    <fieldset class="fieldset flex-1/2">
-                        <legend class="fieldset-legend">&nbsp;Title (EN)</legend
-                        >
-                        <input type="text" class="input" />
-                    </fieldset>
-                    <fieldset class="fieldset flex-1/2">
-                        <legend class="fieldset-legend">&nbsp;Title (JP)</legend
-                        >
-                        <input type="text" class="input" />
-                    </fieldset>
-                </div>
-                <div class="flex flex-row gap-x-8">
-                    <fieldset class="fieldset flex-1/2">
-                        <legend class="fieldset-legend"
-                            >&nbsp;Author (EN)</legend
-                        >
-                        <input type="text" class="input" />
-                    </fieldset>
-                    <fieldset class="fieldset flex-1/2">
-                        <legend class="fieldset-legend"
-                            >&nbsp;Author (JP)</legend
-                        >
-                        <input type="text" class="input" />
-                    </fieldset>
-                </div>
-                <div class="flex flex-row gap-x-8">
-                    <fieldset class="fieldset flex-1/3">
-                        <legend class="fieldset-legend">&nbsp;Year</legend>
-                        <input type="number" class="input flex-1/3" />
-                    </fieldset>
-                    <fieldset class="fieldset flex-1/3">
-                        <legend class="fieldset-legend">&nbsp;Chapters</legend>
-                        <input type="number" class="input flex-1/3" />
-                    </fieldset>
-                    <fieldset class="fieldset flex-1/3">
-                        <legend class="fieldset-legend">&nbsp;Volumes</legend>
-                        <input type="number" class="input flex-1/3" />
-                    </fieldset>
-                </div>
-                <div class="flex flex-row gap-x-8">
-                    <fieldset class="fieldset flex-1/2">
-                        <legend class="fieldset-legend"
-                            >&nbsp;Publication Status</legend
-                        >
-                        <select class="select">
-                            <option selected disabled></option>
-                            <option value="">Ongoing</option>
-                            <option value="">Finished</option>
-                            <option value="">Hiatus</option>
-                            <option value="">Discontinued</option>
-                            <option value="">Upcoming</option>
-                        </select>
-                    </fieldset>
-                    <fieldset class="fieldset flex-1/2">
-                        <legend class="fieldset-legend"
-                            >&nbsp;Reading Status</legend
-                        >
-                        <select class="select">
-                            <option selected disabled></option>
-                            <option value="">Reading</option>
-                            <option value="">Completed</option>
-                            <option value="">Plan to Read</option>
-                            <option value="">Dropped</option>
-                        </select>
-                    </fieldset>
-                </div>
-                <fieldset class="fieldset flex-1/3">
-                    <legend class="fieldset-legend">&nbsp;Genres</legend>
-                    <input
-                        type="text"
-                        placeholder={`Separate with "|", e.g. Romance | Comedy`}
-                        class="w-full input"
-                    />
-                </fieldset>
-            </div>
-        </dialog>
     </div>
 </div>
