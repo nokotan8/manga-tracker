@@ -5,7 +5,7 @@
     import { token, username } from "../../../stores/userState";
     import axios from "axios";
     import ToastStack from "$lib/components/ToastStack.svelte";
-    import type { ToastInfo } from "$lib/classes/ToastInfo";
+    import { addToast, type ToastInfo } from "$lib/classes/ToastInfo";
 
     let errorText = $state("");
     let givenUsername = $state("");
@@ -32,15 +32,13 @@
             goto("/home");
         } catch (error: any) {
             if (error.response) {
-                toasts.push({
-                    text: error.response.data.errors[0],
-                    classes: "alert alert-error",
-                });
+                addToast(
+                    toasts,
+                    error.response.data.errors[0],
+                    "alert alert-error",
+                );
             } else {
-                toasts.push({
-                    text: "Something went wrong",
-                    classes: "alert alert-error",
-                });
+                addToast(toasts, "Something went wrong", "alert alert-error");
             }
         }
     };

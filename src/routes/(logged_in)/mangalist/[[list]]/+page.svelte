@@ -5,7 +5,7 @@
     import ListFilter from "$lib/components/mangalist/ListFilter.svelte";
     import MangaTable from "$lib/components/mangalist/MangaTable.svelte";
     const lists = $state(["List 1", "List 2", "List 3"]);
-    let addMangaModalOpen: boolean = $state(true);
+    let addMangaModalOpen: boolean = $state(false);
 
     let currList: string = $state("");
     $effect(() => {
@@ -74,7 +74,7 @@
         <div class="flex flex-row gap-5 justify-start pt-2.5">
             <ListFilter {lists} {currList}></ListFilter>
             <MangaTable {dispMangas}></MangaTable>
-            <AddMangaModal {lists} {addMangaModalOpen}></AddMangaModal>
+            <AddMangaModal {lists} bind:addMangaModalOpen></AddMangaModal>
         </div>
     </div>
 </div>
