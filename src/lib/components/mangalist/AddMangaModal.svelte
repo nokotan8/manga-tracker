@@ -87,7 +87,7 @@
         const genresSplit = genres.split("|").map((g) => g.trim());
 
         try {
-            await axios.post(
+            const res = await axios.post(
                 `http://${API_URL}/manga`,
                 {
                     titleEN: titleEN,
@@ -95,20 +95,35 @@
                     authorEN: authorEN,
                     authorJP: authorJP,
                     year: parseInt(year),
-                    chapsRead: chapsRead,
                     chapsTotal: chapsTotal,
-                    volsRead: volsRead,
                     volsTotal: volsTotal,
                     pubStatus: pubStatus,
-                    readStatus: readStatus,
                     genres: genresSplit,
-                    notes: notes,
-                    lists: checkedLists,
-                    score: score,
                     isPublic: isPublic,
                 },
                 { headers: HEADERS },
             );
+
+            axios.post(
+                `http://${API_URL}/mangalist/manga`,
+                {
+                    mangaId: res.data.mangaId,
+                    chapsRead: chapsRead,
+                    chapsTotal: chapsTotal,
+                    readStatus: readStatus,
+                    score: score,
+                    notes: notes,
+                },
+                { headers: HEADERS },
+            );
+
+            for (let list of checkedLists) {
+                axios.post(
+                    `http://${API_URL}/mangalist/lists/${list}`,
+                    { mangaId: res.data.mangaId },
+                    { headers: HEADERS },
+                );
+            }
 
             addMangaModalOpen = false;
         } catch (error: any) {
@@ -121,6 +136,7 @@
             } else {
                 addToast(toasts, "Something went wrong", "alert alert-error");
             }
+            return;
         }
     };
 </script>
