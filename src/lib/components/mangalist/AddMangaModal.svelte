@@ -35,7 +35,7 @@
         customLists.forEach((c) => {
             const checkbox = c as HTMLInputElement;
             if (checkbox.checked) {
-                checkedLists.push(checkbox.value);
+                checkedLists.push(checkbox.dataset.id as string);
             }
         });
 
@@ -86,20 +86,6 @@
             }
         }
 
-        if (!pubStatus) {
-            addToast(
-                toasts,
-                "Please select a publication status",
-                "alert alert-error",
-            );
-        }
-        if (!readStatus) {
-            addToast(
-                toasts,
-                "Please select a reading status",
-                "alert alert-error",
-            );
-        }
         const genresSplit = genres.split("|").map((g) => g.trim());
 
         try {
@@ -324,8 +310,9 @@
                             ><input
                                 type="checkbox"
                                 class="checkbox checkbox-sm"
-                                value={list}
-                            />{list}</label
+                                value={list.name}
+                                data-id={list.id}
+                            />{list.name}</label
                         >
                     {/each}
                 </fieldset>

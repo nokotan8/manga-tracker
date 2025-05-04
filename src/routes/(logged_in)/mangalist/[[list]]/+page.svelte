@@ -4,8 +4,18 @@
     import AddMangaModal from "$lib/components/mangalist/AddMangaModal.svelte";
     import ListFilter from "$lib/components/mangalist/ListFilter.svelte";
     import MangaTable from "$lib/components/mangalist/MangaTable.svelte";
-    const lists = $state(["List 1", "List 2", "List 3"]);
+    import type { ToastInfo } from "$lib/classes/ToastInfo";
+    import type { List } from "$lib/classes/List";
+    import ToastStack from "$lib/components/ToastStack.svelte";
+
+    const exList: List = {
+        name: "List 1",
+        id: "1",
+    };
+    const lists = $state([exList]);
+
     let addMangaModalOpen: boolean = $state(false);
+    let toasts: ToastInfo[] = $state([]);
 
     let currList: string = $state("");
     $effect(() => {
@@ -33,6 +43,7 @@
     };
 </script>
 
+<ToastStack position="bot-right" {toasts}></ToastStack>
 <svelte:window onkeydown={handleKeyDown} />
 <div class="flex flex-col justify-center items-center py-10 px-25">
     <div class="">
@@ -72,7 +83,7 @@
             </button>
         </div>
         <div class="flex flex-row gap-5 justify-start pt-2.5">
-            <ListFilter {lists} {currList}></ListFilter>
+            <ListFilter {lists} {currList} bind:toasts></ListFilter>
             <MangaTable {dispMangas}></MangaTable>
             <AddMangaModal {lists} bind:addMangaModalOpen></AddMangaModal>
         </div>
