@@ -29,7 +29,7 @@
             <li>
                 <details open>
                     <summary>Your Lists</summary>
-                    <ul class="overflow-scroll max-h-[50vh]">
+                    <ul class="overflow-auto max-h-[50vh]">
                         {#each lists as list}
                             <li>
                                 <a

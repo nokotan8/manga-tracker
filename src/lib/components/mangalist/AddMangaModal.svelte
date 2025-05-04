@@ -2,7 +2,8 @@
     import ToastStack from "../ToastStack.svelte";
     import { addToast, type ToastInfo } from "$lib/classes/ToastInfo";
     import axios from "axios";
-    import { API_URL, HEADERS } from "$lib";
+    import { API_URL, HEADERS, logout } from "$lib";
+    import { token } from "../../../stores/userState";
 
     let { addMangaModalOpen = $bindable(), lists } = $props();
 
@@ -84,6 +85,21 @@
                 return;
             }
         }
+
+        if (!pubStatus) {
+            addToast(
+                toasts,
+                "Please select a publication status",
+                "alert alert-error",
+            );
+        }
+        if (!readStatus) {
+            addToast(
+                toasts,
+                "Please select a reading status",
+                "alert alert-error",
+            );
+        }
         const genresSplit = genres.split("|").map((g) => g.trim());
 
         try {
@@ -101,7 +117,7 @@
                     genres: genresSplit,
                     isPublic: isPublic,
                 },
-                { headers: HEADERS },
+                { headers: { ...HEADERS, Authorization: `Bearer ${$token}` } },
             );
 
             axios.post(
@@ -114,20 +130,28 @@
                     score: score,
                     notes: notes,
                 },
-                { headers: HEADERS },
+                { headers: { ...HEADERS, Authorization: `Bearer ${$token}` } },
             );
 
             for (let list of checkedLists) {
                 axios.post(
                     `http://${API_URL}/mangalist/lists/${list}`,
                     { mangaId: res.data.mangaId },
-                    { headers: HEADERS },
+                    {
+                        headers: {
+                            ...HEADERS,
+                            Authorization: `Bearer ${$token}`,
+                        },
+                    },
                 );
             }
 
             addMangaModalOpen = false;
         } catch (error: any) {
             if (error.response) {
+                if (error.response.status && error.response.status === 401) {
+                    logout();
+                }
                 addToast(
                     toasts,
                     error.response.data.errors[0],
@@ -143,10 +167,10 @@
 
 <dialog class={"modal" + (addMangaModalOpen ? " modal-open" : "")}>
     <ToastStack {toasts} position="top-mid"></ToastStack>
-    <div class="modal-box md:w-130 lg:w-160 xl:w-220">
+    <div class="modal-box md:w-150 lg:w-180 xl:w-240">
         <button
             onclick={() => (addMangaModalOpen = false)}
-            class="absolute top-2 left-2 btn btn-sm btn-circle btn-ghost"
+            class="absolute top-1 left-1 !shadow-none border-none btn btn-sm btn-circle btn-ghost"
             >✕</button
         >
         <form onsubmit={submitManga} class="flex flex-row justify-evenly">
@@ -289,10 +313,10 @@
                     </fieldset>
                 </div>
             </div>
-            <div class="flex flex-col justify-between">
+            <div class="flex flex-col justify-between items-center">
                 <fieldset
                     id="custom-lists"
-                    class="overflow-scroll p-4 h-108 fieldset bg-base-100"
+                    class="overflow-auto p-4 h-108 w-30 fieldset bg-base-100"
                 >
                     <legend class="fieldset-legend">Custom Lists</legend>
                     {#each lists as list}
@@ -305,7 +329,7 @@
                         >
                     {/each}
                 </fieldset>
-                <button type="submit" class="btn">Add</button>
+                <button type="submit" class="w-20 btn">Add</button>
             </div>
         </form>
     </div>
