@@ -1,5 +1,21 @@
 <script lang="ts">
-    let { dispMangas } = $props();
+    import { page } from "$app/state";
+    import { testMangas } from "$lib/classes/Manga";
+    let currList: string = $state("");
+    $effect(() => {
+        currList = page.params.list || "";
+    });
+
+    let dispMangas = $state(testMangas);
+    $effect(() => {
+        if (currList) {
+            dispMangas = testMangas.filter((manga) =>
+                manga.lists.map((list) => list).includes(currList),
+            );
+        } else {
+            dispMangas = testMangas;
+        }
+    });
 </script>
 
 <div

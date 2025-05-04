@@ -1,11 +1,16 @@
 <script lang="ts">
+    import { page } from "$app/state";
     import { API_URL, HEADERS } from "$lib";
     import axios from "axios";
     import { token } from "../../../stores/userState";
     import { addToast } from "$lib/classes/ToastInfo";
 
-    let { lists, currList, toasts = $bindable() } = $props();
+    let { lists = $bindable(), listsPromise, toasts = $bindable() } = $props();
 
+    let currList: string | undefined = $state(undefined);
+    $effect(() => {
+        currList = page.params.list || "";
+    });
     let newListName = $state("");
     const listActive = (list: string): "menu-active" | "" => {
         return list === currList ? "menu-active" : "";
@@ -25,9 +30,14 @@
 
             addToast(
                 toasts,
-                `List ${newListName} added`,
+                `List "${newListName}" added`,
                 "alert alert-success",
             );
+
+            lists.push({
+                name: newListName,
+                id: res.data.listId,
+            });
         } catch (error: any) {
             if (error.response) {
                 addToast(
@@ -68,14 +78,21 @@
                 <details open>
                     <summary>Your Lists</summary>
                     <ul class="overflow-auto max-h-[50vh]">
-                        {#each lists as list}
-                            <li>
-                                <a
-                                    href={`/mangalist/${list.id}`}
-                                    class={listActive(list.name)}>{list.name}</a
-                                >
-                            </li>
-                        {/each}
+                        {#await listsPromise}
+                            <p>Loading...</p>
+                        {:then}
+                            {#each lists as list}
+                                <li>
+                                    <a
+                                        href={`/mangalist/${list.id}`}
+                                        class={listActive(list.id)}
+                                        >{list.name}</a
+                                    >
+                                </li>
+                            {/each}
+                        {:catch}
+                            <p>Error loading lists</p>
+                        {/await}
                         <li></li>
                     </ul>
                 </details>
@@ -89,6 +106,11 @@
                 <button
                     class="mt-1 w-full btn btn-sm btn-neutral"
                     aria-label="Add list"
+                    onclick={() => {
+                        const addListInput =
+                            document.getElementById("add-list-input");
+                        if (addListInput) addListInput.focus();
+                    }}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -108,6 +130,7 @@
                     class="shadow-sm dropdown-content menu rounded-box bg-base-100"
                 >
                     <input
+                        id="add-list-input"
                         type="text"
                         bind:value={newListName}
                         placeholder="List name"

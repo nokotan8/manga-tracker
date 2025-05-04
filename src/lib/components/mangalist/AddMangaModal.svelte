@@ -5,7 +5,11 @@
     import { API_URL, HEADERS, logout } from "$lib";
     import { token } from "../../../stores/userState";
 
-    let { addMangaModalOpen = $bindable(), lists } = $props();
+    let {
+        pageToasts = $bindable(),
+        addMangaModalOpen = $bindable(),
+        lists,
+    } = $props();
 
     let titleEN = $state("");
     let titleJP = $state("");
@@ -133,6 +137,13 @@
             }
 
             addMangaModalOpen = false;
+
+            addToast(
+                pageToasts,
+                "Manga added successfully",
+                "alert alert-success",
+            );
+            // Reset all params
         } catch (error: any) {
             if (error.response) {
                 if (error.response.status && error.response.status === 401) {
@@ -225,12 +236,12 @@
                             >&nbsp;Publication Status</legend
                         >
                         <select bind:value={pubStatus} class="select">
-                            <option selected disabled></option>
-                            <option value="Ongoing">Ongoing</option>
-                            <option value="Finished">Finished</option>
-                            <option value="Hiatus">Hiatus</option>
-                            <option value="Discontinued">Discontinued</option>
-                            <option value="Upcoming">Upcoming</option>
+                            <option value="" selected disabled></option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="finished">Finished</option>
+                            <option value="hiatus">Hiatus</option>
+                            <option value="discontinued">Discontinued</option>
+                            <option value="upcoming">Upcoming</option>
                         </select>
                     </fieldset>
                     <fieldset class="fieldset flex-1/2">
@@ -238,11 +249,11 @@
                             >&nbsp;Reading Status</legend
                         >
                         <select class="select" bind:value={readStatus}>
-                            <option selected disabled></option>
-                            <option value="Reading">Reading</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Plan to Read">Plan to Read</option>
-                            <option value="Dropped">Dropped</option>
+                            <option value="" selected disabled></option>
+                            <option value="reading">Reading</option>
+                            <option value="completed">Completed</option>
+                            <option value="planned">Plan to Read</option>
+                            <option value="dropped">Dropped</option>
                         </select>
                     </fieldset>
                 </div>

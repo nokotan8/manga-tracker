@@ -1,40 +1,38 @@
 <script lang="ts">
-    import { page } from "$app/state";
-    import { testMangas } from "$lib/classes/Manga";
     import AddMangaModal from "$lib/components/mangalist/AddMangaModal.svelte";
     import ListFilter from "$lib/components/mangalist/ListFilter.svelte";
     import MangaTable from "$lib/components/mangalist/MangaTable.svelte";
-    import type { ToastInfo } from "$lib/classes/ToastInfo";
-    import type { List } from "$lib/classes/List";
+    import { addToast, type ToastInfo } from "$lib/classes/ToastInfo";
     import ToastStack from "$lib/components/ToastStack.svelte";
+    import axios from "axios";
+    import { HEADERS, API_URL } from "$lib";
+    import { token } from "../../../../stores/userState";
 
-    const exList: List = {
-        name: "List 1",
-        id: "1",
+    let lists = $state([]);
+    let listsPromise = $state();
+    const getLists = async () => {
+        try {
+            const res = await axios.get(`http://${API_URL}/mangalist`, {
+                headers: { ...HEADERS, Authorization: `Bearer ${$token}` },
+            });
+            lists = res.data.lists;
+            return lists;
+        } catch (error: any) {
+            if (error.response) {
+                addToast(
+                    toasts,
+                    error.response.data.errors[0],
+                    "alert alert-error",
+                );
+            } else {
+                addToast(toasts, "Something went wrong", "alert alert-error");
+            }
+        }
     };
-    const lists = $state([exList]);
+    listsPromise = getLists();
 
     let addMangaModalOpen: boolean = $state(false);
     let toasts: ToastInfo[] = $state([]);
-
-    let currList: string = $state("");
-    $effect(() => {
-        currList = page.params.list || "";
-    });
-
-    let dispMangas = $state(testMangas);
-
-    $effect(() => {
-        if (currList) {
-            dispMangas = testMangas.filter((manga) =>
-                manga.lists
-                    .map((list) => list.toLowerCase())
-                    .includes(currList.toLowerCase()),
-            );
-        } else {
-            dispMangas = testMangas;
-        }
-    });
 
     const handleKeyDown = (k: KeyboardEvent): void => {
         if (k.key === "Escape") {
@@ -83,9 +81,13 @@
             </button>
         </div>
         <div class="flex flex-row gap-5 justify-start pt-2.5">
-            <ListFilter {lists} {currList} bind:toasts></ListFilter>
-            <MangaTable {dispMangas}></MangaTable>
-            <AddMangaModal {lists} bind:addMangaModalOpen></AddMangaModal>
+            <ListFilter bind:lists {listsPromise} bind:toasts></ListFilter>
+            <MangaTable></MangaTable>
+            <AddMangaModal
+                {lists}
+                bind:pageToasts={toasts}
+                bind:addMangaModalOpen
+            ></AddMangaModal>
         </div>
     </div>
 </div>
