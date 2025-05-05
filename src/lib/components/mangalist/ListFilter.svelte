@@ -23,7 +23,7 @@
         }
         try {
             const res = await axios.post(
-                `http://${API_URL}/mangalist`,
+                `http://${API_URL}/mangalist/list`,
                 { name: newListName },
                 { headers: { ...HEADERS, Authorization: `Bearer ${$token}` } },
             );

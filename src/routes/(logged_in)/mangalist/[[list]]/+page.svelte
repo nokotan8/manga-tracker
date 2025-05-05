@@ -12,7 +12,7 @@
     let listsPromise = $state();
     const getLists = async () => {
         try {
-            const res = await axios.get(`http://${API_URL}/mangalist`, {
+            const res = await axios.get(`http://${API_URL}/mangalist/list`, {
                 headers: { ...HEADERS, Authorization: `Bearer ${$token}` },
             });
             lists = res.data.lists;
@@ -82,7 +82,7 @@
         </div>
         <div class="flex flex-row gap-5 justify-start pt-2.5">
             <ListFilter bind:lists {listsPromise} bind:toasts></ListFilter>
-            <MangaTable></MangaTable>
+            <MangaTable bind:toasts></MangaTable>
             <AddMangaModal
                 {lists}
                 bind:pageToasts={toasts}

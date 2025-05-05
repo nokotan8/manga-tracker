@@ -31,6 +31,23 @@
     let toasts: ToastInfo[] = $state([]);
 
     const submitManga = async (): Promise<void> => {
+        if (!titleJP) {
+            addToast(
+                toasts,
+                "Manga must have a JP title",
+                "alert alert-error",
+            );
+            return;
+        }
+        if (!pubStatus || !readStatus) {
+            addToast(
+                toasts,
+                "Enter a publication and reading status",
+                "alert alert-error",
+            );
+            return;
+        }
+
         // Lists
         checkedLists = [];
         const customLists = document.querySelectorAll(
@@ -110,12 +127,12 @@
                 { headers: { ...HEADERS, Authorization: `Bearer ${$token}` } },
             );
 
-            axios.post(
+            const res2 = await axios.post(
                 `http://${API_URL}/mangalist/manga`,
                 {
                     mangaId: res.data.mangaId,
                     chapsRead: chapsRead,
-                    chapsTotal: chapsTotal,
+                    volsRead: volsRead,
                     readStatus: readStatus,
                     score: score,
                     notes: notes,
@@ -124,9 +141,9 @@
             );
 
             for (let list of checkedLists) {
-                axios.post(
-                    `http://${API_URL}/mangalist/lists/${list}`,
-                    { mangaId: res.data.mangaId },
+                await axios.post(
+                    `http://${API_URL}/mangalist/list/${list}`,
+                    { listEntry: res2.data.entryId },
                     {
                         headers: {
                             ...HEADERS,
@@ -237,11 +254,11 @@
                         >
                         <select bind:value={pubStatus} class="select">
                             <option value="" selected disabled></option>
-                            <option value="ongoing">Ongoing</option>
-                            <option value="finished">Finished</option>
-                            <option value="hiatus">Hiatus</option>
-                            <option value="discontinued">Discontinued</option>
-                            <option value="upcoming">Upcoming</option>
+                            <option value="Ongoing">Ongoing</option>
+                            <option value="Finished">Finished</option>
+                            <option value="Hiatus">Hiatus</option>
+                            <option value="Discontinued">Discontinued</option>
+                            <option value="Upcoming">Upcoming</option>
                         </select>
                     </fieldset>
                     <fieldset class="fieldset flex-1/2">

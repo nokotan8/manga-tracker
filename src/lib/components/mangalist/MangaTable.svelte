@@ -1,21 +1,52 @@
 <script lang="ts">
     import { page } from "$app/state";
+    import { API_URL, HEADERS } from "$lib";
     import { testMangas } from "$lib/classes/Manga";
+    import axios from "axios";
+    import { token } from "../../../stores/userState";
+    import { addToast } from "$lib/classes/ToastInfo";
     let currList: string = $state("");
+    let { toasts = $bindable() } = $props();
     $effect(() => {
         currList = page.params.list || "";
     });
 
-    let dispMangas = $state(testMangas);
-    $effect(() => {
-        if (currList) {
-            dispMangas = testMangas.filter((manga) =>
-                manga.lists.map((list) => list).includes(currList),
+    let listEntries: any[] = $state([]);
+    let listEntriesPromise = $state();
+    const getListEntries = async () => {
+        try {
+            const res = await axios.get(
+                `http://${API_URL}/mangalist/list/all`,
+                {
+                    headers: { ...HEADERS, Authorization: `Bearer ${$token}` },
+                },
             );
-        } else {
-            dispMangas = testMangas;
+            listEntries = res.data.listEntries;
+            return listEntries;
+        } catch (error: any) {
+            // if (error.response) {
+            //     addToast(
+            //         toasts,
+            //         error.response.data.errors[0],
+            //         "alert alert-error",
+            //     );
+            // } else {
+            //     addToast(toasts, "Something went wrong", "alert alert-error");
+            // }
         }
-    });
+    };
+    listEntriesPromise = getListEntries();
+
+    // let dispMangas = $state(testMangas);
+    // $effect(() => {
+    //     if (currList) {
+    //         dispMangas = testMangas.filter((manga) =>
+    //             manga.lists.includes(currList),
+    //         );
+    //     } else {
+    //         dispMangas = testMangas;
+    //     }
+    // });
 </script>
 
 <div
@@ -28,35 +59,29 @@
                 <th>Title (JP)</th>
                 <th>Chapters</th>
                 <th>Volumes</th>
-                <th>Lists</th>
+                <th>Pub. Status</th>
             </tr>
         </thead>
         <tbody>
-            {#each dispMangas as manga}
-                <tr class="hover:bg-base-300">
-                    <th>{manga.titleEN}</th>
-                    <th>{manga.titleJP || ""}</th>
-                    <th>{`${manga.currChaps}/${manga.numChaps}`}</th>
-                    <th>{`${manga.currVols}/${manga.numVols}`}</th>
-                    {#if manga.lists.length < 3}
-                        <th>
-                            {manga.lists[0] +
-                                (manga.lists[1] ? ", " + manga.lists[1] : "")}
-                        </th>
-                    {:else}
-                        <th>
-                            {manga.lists[0] +
-                                (manga.lists[1]
-                                    ? ", " + manga.lists[1]
-                                    : "")},&nbsp;<span
-                                class="text-neutral-content/60"
-                            >
-                                ...</span
-                            >
-                        </th>
-                    {/if}
+            {#await listEntriesPromise}
+                <tr>
+                    <th>Loading...</th>
                 </tr>
-            {/each}
+            {:then}
+                {#each listEntries as entry}
+                    <tr class="hover:bg-base-300">
+                        <th>{entry.titleEN}</th>
+                        <th>{entry.titleJP || ""}</th>
+                        <th
+                            >{`${entry.chapsRead || "-"}/${entry.chaps || "-"}`}</th
+                        >
+                        <th
+                            >{`${entry.volsRead || "-"}/${entry.vols || "-"}`}</th
+                        >
+                        <th>{entry.pubStatus}</th>
+                    </tr>
+                {/each}
+            {/await}
         </tbody>
     </table>
 </div>
