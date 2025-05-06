@@ -12,7 +12,7 @@
     let listsPromise = $state();
     const getLists = async () => {
         try {
-            const res = await axios.get(`http://${API_URL}/mangalist/list`, {
+            const res = await axios.get(`http://${API_URL}/mangalist/lists`, {
                 headers: { ...HEADERS, Authorization: `Bearer ${$token}` },
             });
             lists = res.data.lists;

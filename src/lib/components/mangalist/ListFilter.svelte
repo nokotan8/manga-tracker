@@ -9,7 +9,7 @@
 
     let currList: string | undefined = $state(undefined);
     $effect(() => {
-        currList = page.params.list || "";
+        currList = page.params.list || "all";
     });
     let newListName = $state("");
     const listActive = (list: string): "menu-active" | "" => {
@@ -23,7 +23,7 @@
         }
         try {
             const res = await axios.post(
-                `http://${API_URL}/mangalist/list`,
+                `http://${API_URL}/mangalist/lists`,
                 { name: newListName },
                 { headers: { ...HEADERS, Authorization: `Bearer ${$token}` } },
             );
@@ -58,7 +58,7 @@
     <div>
         Lists
         <ul class="w-full menu menu-active bg-base-100 rounded-box">
-            <li><a href="/mangalist/" class={listActive("")}>All</a></li>
+            <li><a href="/mangalist/" class={listActive("all")}>All</a></li>
             <li>
                 <a href="/mangalist/reading" class={listActive("reading")}
                     >Reading</a

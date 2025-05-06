@@ -8,7 +8,8 @@
     let currList: string = $state("");
     let { toasts = $bindable() } = $props();
     $effect(() => {
-        currList = page.params.list || "";
+        currList = page.params.list || "all";
+        listEntriesPromise = getListEntries();
     });
 
     let listEntries: any[] = $state([]);
@@ -16,7 +17,7 @@
     const getListEntries = async () => {
         try {
             const res = await axios.get(
-                `http://${API_URL}/mangalist/list/all`,
+                `http://${API_URL}/mangalist/lists/${currList}`,
                 {
                     headers: { ...HEADERS, Authorization: `Bearer ${$token}` },
                 },
@@ -35,18 +36,6 @@
             // }
         }
     };
-    listEntriesPromise = getListEntries();
-
-    // let dispMangas = $state(testMangas);
-    // $effect(() => {
-    //     if (currList) {
-    //         dispMangas = testMangas.filter((manga) =>
-    //             manga.lists.includes(currList),
-    //         );
-    //     } else {
-    //         dispMangas = testMangas;
-    //     }
-    // });
 </script>
 
 <div

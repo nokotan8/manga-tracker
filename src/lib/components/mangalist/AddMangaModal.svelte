@@ -142,7 +142,7 @@
 
             for (let list of checkedLists) {
                 await axios.post(
-                    `http://${API_URL}/mangalist/list/${list}`,
+                    `http://${API_URL}/mangalist/lists/${list}`,
                     { listEntry: res2.data.entryId },
                     {
                         headers: {
