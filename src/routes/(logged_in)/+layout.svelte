@@ -6,8 +6,11 @@
     import { page } from "$app/state";
     let { children } = $props();
 
-    if (browser && !localStorage.getItem("username")) {
-        // logout();
+    if (
+        browser &&
+        (!localStorage.getItem("token") || !localStorage.getItem("username"))
+    ) {
+        logout();
     }
 
     const isActive = (path: string): "tab-active" | "" => {
@@ -18,7 +21,11 @@
 <nav class="flex py-0 px-4 mb-4 h-16 shadow-sm navbar bg-base-100">
     <div class="navbar-start">
         <div class="dropdown">
-            <div tabindex="0" role="button" class="md:hidden btn btn-ghost">
+            <div
+                tabindex="0"
+                role="button"
+                class="!shadow-none md:hidden btn btn-ghost"
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="w-5 h-5"
@@ -59,7 +66,7 @@
             <li>
                 <details>
                     <summary>{$username}</summary>
-                    <ul class="p-2 rounded-t-none rounded-lg bg-base-100">
+                    <ul class="p-2 rounded-lg rounded-t-none bg-base-100">
                         <li><a>Profile</a></li>
                         <li><button onclick={logout}>Logout</button></li>
                     </ul>
