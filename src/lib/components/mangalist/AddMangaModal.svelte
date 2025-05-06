@@ -32,11 +32,7 @@
 
     const submitManga = async (): Promise<void> => {
         if (!titleJP) {
-            addToast(
-                toasts,
-                "Manga must have a JP title",
-                "alert alert-error",
-            );
+            addToast(toasts, "Manga must have a JP title", "alert alert-error");
             return;
         }
         if (!pubStatus || !readStatus) {

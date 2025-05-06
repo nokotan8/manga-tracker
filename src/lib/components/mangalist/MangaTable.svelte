@@ -1,16 +1,28 @@
 <script lang="ts">
     import { page } from "$app/state";
     import { API_URL, HEADERS } from "$lib";
-    import { testMangas } from "$lib/classes/Manga";
     import axios from "axios";
     import { token } from "../../../stores/userState";
     import { addToast } from "$lib/classes/ToastInfo";
+    import UpdateEntryModal from "./UpdateEntryModal.svelte";
     let currList: string = $state("");
     let { toasts = $bindable() } = $props();
     $effect(() => {
         currList = page.params.list || "all";
         listEntriesPromise = getListEntries();
     });
+
+    let entryInfo = $state({
+        mangaId: "",
+        titleEN: "",
+        titleJP: "",
+        chapsRead: 0,
+        volsRead: 0,
+        readStatus: "",
+        score: 0,
+        notes: "",
+    });
+    let updateEntryModalOpen = $state(false);
 
     let listEntries: any[] = $state([]);
     let listEntriesPromise = $state();
@@ -36,6 +48,34 @@
             // }
         }
     };
+
+    const getEntryDetails = async (entryId: string) => {
+        try {
+            const res = await axios.get(
+                `http://${API_URL}/mangalist/manga/${entryId}`,
+                {
+                    headers: { ...HEADERS, Authorization: `Bearer ${$token}` },
+                },
+            );
+
+            entryInfo = res.data;
+            updateEntryModalOpen = true;
+        } catch (error: any) {
+            if (error.response) {
+                addToast(
+                    toasts,
+                    error.response.data.errors[0],
+                    "alert alert-error",
+                );
+            } else {
+                addToast(
+                    toasts,
+                    "Error: could not retrieve details",
+                    "alert alert-error",
+                );
+            }
+        }
+    };
 </script>
 
 <div
@@ -58,7 +98,10 @@
                 </tr>
             {:then}
                 {#each listEntries as entry}
-                    <tr class="hover:bg-base-300">
+                    <tr
+                        class="hover:bg-base-300"
+                        onclick={() => getEntryDetails(entry.entryId)}
+                    >
                         <th>{entry.titleEN}</th>
                         <th>{entry.titleJP || ""}</th>
                         <th
@@ -74,3 +117,5 @@
         </tbody>
     </table>
 </div>
+<UpdateEntryModal {entryInfo} bind:updateEntryModalOpen pageToasts={toasts}
+></UpdateEntryModal>
