@@ -173,8 +173,15 @@
             return;
         }
     };
+
+    const handleKeyDown = (k: KeyboardEvent): void => {
+        if (k.key === "Escape") {
+            addMangaModalOpen = false;
+        }
+    };
 </script>
 
+<svelte:window onkeydown={handleKeyDown} />
 <dialog class={"modal" + (addMangaModalOpen ? " modal-open" : "")}>
     <ToastStack {toasts} position="top-mid"></ToastStack>
     <div class="modal-box md:w-150 lg:w-180 xl:w-240">

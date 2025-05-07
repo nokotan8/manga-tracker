@@ -34,15 +34,9 @@
     let addMangaModalOpen: boolean = $state(false);
     let toasts: ToastInfo[] = $state([]);
 
-    const handleKeyDown = (k: KeyboardEvent): void => {
-        if (k.key === "Escape") {
-            addMangaModalOpen = false;
-        }
-    };
 </script>
 
 <ToastStack position="bot-right" {toasts}></ToastStack>
-<svelte:window onkeydown={handleKeyDown} />
 <div class="flex flex-col justify-center items-center py-10 px-25">
     <div class="">
         <div class="flex flex-row justify-between">
@@ -82,7 +76,7 @@
         </div>
         <div class="flex flex-row gap-5 justify-start pt-2.5">
             <ListFilter bind:lists {listsPromise} bind:toasts></ListFilter>
-            <MangaTable bind:toasts></MangaTable>
+            <MangaTable {lists} bind:toasts></MangaTable>
             <AddMangaModal
                 {lists}
                 bind:pageToasts={toasts}

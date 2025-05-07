@@ -6,21 +6,24 @@
     import { addToast } from "$lib/classes/ToastInfo";
     import UpdateEntryModal from "./UpdateEntryModal.svelte";
     let currList: string = $state("");
-    let { toasts = $bindable() } = $props();
+    let { toasts = $bindable(), lists } = $props();
     $effect(() => {
         currList = page.params.list || "all";
         listEntriesPromise = getListEntries();
     });
 
     let entryInfo = $state({
-        mangaId: "",
-        titleEN: "",
-        titleJP: "",
-        chapsRead: 0,
-        volsRead: 0,
-        readStatus: "",
-        score: 0,
-        notes: "",
+        entry: {
+            mangaId: "",
+            titleEN: "",
+            titleJP: "",
+            chapsRead: 0,
+            volsRead: 0,
+            readStatus: "",
+            score: 0,
+            notes: "",
+        },
+        lists: [],
     });
     let updateEntryModalOpen = $state(false);
 
@@ -59,6 +62,7 @@
             );
 
             entryInfo = res.data;
+
             updateEntryModalOpen = true;
         } catch (error: any) {
             if (error.response) {
@@ -117,5 +121,9 @@
         </tbody>
     </table>
 </div>
-<UpdateEntryModal {entryInfo} bind:updateEntryModalOpen pageToasts={toasts}
+<UpdateEntryModal
+    {lists}
+    {entryInfo}
+    bind:updateEntryModalOpen
+    pageToasts={toasts}
 ></UpdateEntryModal>
