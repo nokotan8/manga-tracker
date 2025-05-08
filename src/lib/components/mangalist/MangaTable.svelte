@@ -13,7 +13,9 @@
     });
 
     let entryInfo = $state({
+        entryId: "",
         entry: {
+            entryId: "",
             mangaId: "",
             titleEN: "",
             titleJP: "",
@@ -62,6 +64,7 @@
             );
 
             entryInfo = res.data;
+            entryInfo.entryId = entryId;
 
             updateEntryModalOpen = true;
         } catch (error: any) {
@@ -122,6 +125,7 @@
     </table>
 </div>
 <UpdateEntryModal
+    bind:listEntries
     {lists}
     {entryInfo}
     bind:updateEntryModalOpen

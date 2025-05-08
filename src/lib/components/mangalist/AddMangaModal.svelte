@@ -151,11 +151,7 @@
 
             addMangaModalOpen = false;
 
-            addToast(
-                pageToasts,
-                "Manga added successfully",
-                "alert alert-success",
-            );
+            addToast(pageToasts, "Manga added", "alert alert-success");
             // Reset all params
         } catch (error: any) {
             if (error.response) {

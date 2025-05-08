@@ -1,11 +1,15 @@
 <script lang="ts">
-    import type { ToastInfo } from "$lib/classes/ToastInfo";
+    import { API_URL, HEADERS, logout } from "$lib";
+    import { addToast, type ToastInfo } from "$lib/classes/ToastInfo";
+    import axios from "axios";
     import ToastStack from "../ToastStack.svelte";
+    import { token } from "../../../stores/userState";
     let {
         lists,
         entryInfo,
         updateEntryModalOpen = $bindable(),
         pageToasts = $bindable(),
+        listEntries = $bindable(),
     } = $props();
 
     const handleKeyDown = (k: KeyboardEvent): void => {
@@ -24,10 +28,11 @@
     let score = $derived(entryInfo.entry.score);
     let notes = $derived(entryInfo.entry.notes);
     let inLists = $derived(entryInfo.lists);
+    let oldInLists = $derived(new Set(entryInfo.lists));
 
     $effect(() => {
         const scoreRadios = document.querySelectorAll(
-            "#manga-rating input[type='radio']",
+            "#manga-rating-update input[type='radio']",
         );
         scoreRadios.forEach((r) => {
             const radio = r as HTMLInputElement;
@@ -39,9 +44,8 @@
         });
 
         const customLists = document.querySelectorAll(
-            "#custom-lists input[type='checkbox']",
+            "#custom-lists-update input[type='checkbox']",
         );
-        $inspect(inLists);
         customLists.forEach((c) => {
             const checkbox = c as HTMLInputElement;
             checkbox.checked = false;
@@ -52,6 +56,86 @@
             }
         });
     });
+
+    const updateEntry = async () => {
+        try {
+            let newInLists = new Set();
+            const customLists = document.querySelectorAll(
+                "#custom-lists-update input[type='checkbox']",
+            );
+            customLists.forEach((c) => {
+                const checkbox = c as HTMLInputElement;
+                if (checkbox.checked) {
+                    newInLists.add(checkbox.dataset.id as string);
+                }
+            });
+
+            await axios.put(
+                `http://${API_URL}/mangalist/manga/${entryInfo.entryId}`,
+                {
+                    chapsRead: parseInt(chapsRead),
+                    volsRead: parseInt(volsRead),
+                    readStatus: readStatus,
+                    score: score,
+                    notes: notes,
+                },
+                {
+                    headers: {
+                        ...HEADERS,
+                        Authorization: `Bearer ${$token}`,
+                    },
+                },
+            );
+
+            let removed = oldInLists.difference(newInLists);
+            let added = newInLists.difference(oldInLists);
+            for (const list of added) {
+                await axios.post(
+                    `http://${API_URL}/mangalist/lists/${list}`,
+                    { listEntry: entryInfo.entryId },
+                    {
+                        headers: {
+                            ...HEADERS,
+                            Authorization: `Bearer ${$token}`,
+                        },
+                    },
+                );
+            }
+            for (const list of removed) {
+                await axios.delete(
+                    `http://${API_URL}/mangalist/lists/${list}/${entryInfo.entryId}`,
+                    {
+                        headers: {
+                            ...HEADERS,
+                            Authorization: `Bearer ${$token}`,
+                        },
+                    },
+                );
+            }
+
+            for (let entry of listEntries) {
+                if (entry.entryId === entryInfo.entryId) {
+                    entry.chapsRead = chapsRead;
+                    entry.volsRead = volsRead;
+                }
+            }
+            updateEntryModalOpen = false;
+            addToast(pageToasts, "Entry updated", "alert alert-success");
+        } catch (err: any) {
+            if (err.response) {
+                if (err.response.status && err.response.status === 401) {
+                    logout();
+                }
+                addToast(
+                    toasts,
+                    err.response.data.errors[0],
+                    "alert alert-error",
+                );
+            } else {
+                addToast(toasts, "Something went wrong", "alert alert-error");
+            }
+        }
+    };
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
@@ -74,7 +158,7 @@
                 </p>
             </div>
         </div>
-        <form onsubmit={() => {}} class="flex flex-row justify-evenly">
+        <form onsubmit={updateEntry} class="flex flex-row justify-evenly">
             <div class="flex flex-col gap-y-2 ml-5">
                 <div class="flex flex-row gap-x-8">
                     <fieldset class="fieldset flex-1/2">
@@ -113,7 +197,7 @@
                     <fieldset class="fieldset">
                         <legend class="fieldset-legend">&nbsp;Score</legend>
                         <div
-                            id="manga-rating"
+                            id="manga-rating-update"
                             class="pl-0 rating rating-sm rating-half"
                         >
                             <input
@@ -147,7 +231,7 @@
             </div>
             <div class="flex flex-col gap-y-3 justify-between items-center">
                 <fieldset
-                    id="custom-lists"
+                    id="custom-lists-update"
                     class="overflow-auto p-4 h-65 w-30 fieldset bg-base-100"
                 >
                     <legend class="fieldset-legend">Custom Lists</legend>
