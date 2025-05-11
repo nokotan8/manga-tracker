@@ -141,13 +141,13 @@
 <svelte:window onkeydown={handleKeyDown} />
 <dialog class={"modal" + (updateEntryModalOpen ? " modal-open" : "")}>
     <ToastStack {toasts} position="top-mid"></ToastStack>
-    <div class="modal-box md:w-100 lg:w-130 xl:w-180">
+    <div class="p-12 modal-box md:w-130 lg:w-170 xl:w-210">
         <button
             onclick={() => (updateEntryModalOpen = false)}
-            class="absolute top-1 left-1 !shadow-none border-none btn btn-sm btn-circle btn-ghost"
+            class="absolute top-2 left-2 !shadow-none border-none btn btn-sm btn-circle btn-ghost"
             >✕</button
         >
-        <button class="absolute top-3 right-3 btn btn-sm">Manga Details</button>
+        <button class="absolute top-4 right-4 btn btn-sm">Manga Details</button>
         <div class="flex justify-center items-center mb-4">
             <div class="gap-y-2 text-center">
                 <p class="mb-2 text-2xl font-bold">
@@ -229,7 +229,9 @@
                 </div>
                 <button class="self-start btn btn-sm">Delete</button>
             </div>
-            <div class="flex flex-col gap-y-3 justify-between items-center">
+            <div
+                class="flex flex-col gap-y-3 justify-between items-center ml-8"
+            >
                 <fieldset
                     id="custom-lists-update"
                     class="overflow-auto p-4 h-65 w-30 fieldset bg-base-100"

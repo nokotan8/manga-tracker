@@ -216,10 +216,10 @@
 <svelte:window onkeydown={handleKeyDown} />
 <dialog class={"modal" + (addMangaModalOpen ? " modal-open" : "")}>
     <ToastStack {toasts} position="top-mid"></ToastStack>
-    <div class="modal-box md:w-150 lg:w-180 xl:w-240">
+    <div class="px-12 modal-box py-15 md:w-180 lg:w-210 xl:w-260">
         <button
             onclick={() => (addMangaModalOpen = false)}
-            class="absolute top-1 left-1 !shadow-none border-none btn btn-sm btn-circle btn-ghost"
+            class="absolute top-2 left-2 !shadow-none border-none btn btn-sm btn-circle btn-ghost"
             >✕</button
         >
         <form onsubmit={submitManga} class="flex flex-row justify-evenly">
@@ -362,7 +362,7 @@
                     </fieldset>
                 </div>
             </div>
-            <div class="flex flex-col justify-between items-center">
+            <div class="flex flex-col justify-between items-center ml-8">
                 <fieldset
                     id="custom-lists"
                     class="overflow-auto p-4 h-108 w-30 fieldset bg-base-100"
