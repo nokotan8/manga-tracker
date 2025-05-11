@@ -4,6 +4,7 @@
     import axios from "axios";
     import { token } from "../../../stores/userState";
     import { addToast } from "$lib/classes/ToastInfo";
+    import { listEntries } from "./ListEntries.svelte";
     import UpdateEntryModal from "./UpdateEntryModal.svelte";
     let currList: string = $state("");
     let { toasts = $bindable(), lists } = $props();
@@ -29,7 +30,6 @@
     });
     let updateEntryModalOpen = $state(false);
 
-    let listEntries: any[] = $state([]);
     let listEntriesPromise = $state();
     const getListEntries = async () => {
         try {
@@ -39,7 +39,13 @@
                     headers: { ...HEADERS, Authorization: `Bearer ${$token}` },
                 },
             );
-            listEntries = res.data.listEntries;
+
+            while (listEntries.length > 0) {
+                listEntries.pop();
+            }
+            for (const entry of res.data.listEntries) {
+                listEntries.push(entry);
+            }
             return listEntries;
         } catch (error: any) {
             // if (error.response) {
@@ -125,7 +131,6 @@
     </table>
 </div>
 <UpdateEntryModal
-    bind:listEntries
     {lists}
     {entryInfo}
     bind:updateEntryModalOpen

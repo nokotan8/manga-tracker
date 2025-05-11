@@ -4,12 +4,12 @@
     import axios from "axios";
     import ToastStack from "../ToastStack.svelte";
     import { token } from "../../../stores/userState";
+    import { listEntries } from "./ListEntries.svelte";
     let {
         lists,
         entryInfo,
         updateEntryModalOpen = $bindable(),
         pageToasts = $bindable(),
-        listEntries = $bindable(),
     } = $props();
 
     const handleKeyDown = (k: KeyboardEvent): void => {

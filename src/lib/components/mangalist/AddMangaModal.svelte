@@ -4,6 +4,7 @@
     import axios from "axios";
     import { API_URL, HEADERS, logout } from "$lib";
     import { token } from "../../../stores/userState";
+    import { listEntries } from "./ListEntries.svelte";
 
     let {
         pageToasts = $bindable(),
@@ -150,9 +151,44 @@
             }
 
             addMangaModalOpen = false;
+            listEntries.push({
+                mangaId: res.data.mangaId,
+                entryId: res2.data.entryId,
+                titleEN: titleEN,
+                titleJP: titleJP,
+                chaps: chapsTotal,
+                chapsRead: chapsRead,
+                vols: volsTotal,
+                volsRead: volsRead,
+                pubStatus: pubStatus,
+            });
 
             addToast(pageToasts, "Manga added", "alert alert-success");
+
             // Reset all params
+            titleEN = "";
+            titleJP = "";
+            authorEN = "";
+            authorJP = "";
+            year = "";
+            chapters = "";
+            volumes = "";
+            pubStatus = "";
+            readStatus = "";
+            genres = "";
+            notes = "";
+            checkedLists = [];
+            score = 0;
+            isPublic = true;
+
+            customLists.forEach((c) => {
+                const checkbox = c as HTMLInputElement;
+                checkbox.checked = false;
+            });
+            scoreRadios.forEach((r) => {
+                const radio = r as HTMLInputElement;
+                radio.checked = false;
+            });
         } catch (error: any) {
             if (error.response) {
                 if (error.response.status && error.response.status === 401) {

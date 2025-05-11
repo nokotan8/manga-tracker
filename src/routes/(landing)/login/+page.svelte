@@ -19,7 +19,7 @@
             username.set(givenUsername);
             token.set(res.data.token);
 
-            goto("/home");
+            goto("/mangalist");
         } catch (error: any) {
             if (error.response) {
                 errorText = error.response.data.errors[0];

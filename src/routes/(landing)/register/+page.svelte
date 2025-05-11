@@ -29,7 +29,7 @@
             username.set(givenUsername);
             token.set(res.data.token);
 
-            goto("/home");
+            goto("/mangalist");
         } catch (error: any) {
             if (error.response) {
                 addToast(

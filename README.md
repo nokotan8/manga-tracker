@@ -35,6 +35,7 @@ npm run dev
 
 - [x] Basic manga add/edit functionality
 - [x] Basic list add functionality
+- [ ] Sorting and filtering functionality (in development)
 - [ ] Manga and list delete functionality (in development)
 - [ ] Profile information and customisation
 - [ ] Public sharing of selected manga/lists/profile information
