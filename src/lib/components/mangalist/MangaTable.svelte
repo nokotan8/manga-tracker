@@ -97,8 +97,8 @@
     <table class="table table-pin-rows">
         <thead>
             <tr>
-                <th>Title (EN)</th>
                 <th>Title (JP)</th>
+                <th>Title (EN)</th>
                 <th>Chapters</th>
                 <th>Volumes</th>
                 <th>Pub. Status</th>
@@ -115,8 +115,8 @@
                         class="hover:bg-base-300"
                         onclick={() => getEntryDetails(entry.entryId)}
                     >
-                        <th>{entry.titleEN}</th>
-                        <th>{entry.titleJP || ""}</th>
+                        <th>{entry.titleJP}</th>
+                        <th>{entry.titleEN || ""}</th>
                         <th
                             >{`${entry.chapsRead || "-"}/${entry.chaps || "-"}`}</th
                         >

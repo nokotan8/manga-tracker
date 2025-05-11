@@ -76,13 +76,20 @@
                     ? parseInt(chapParts[1])
                     : parseInt(chapParts[0]);
             chapsRead = chapParts.length > 1 ? parseInt(chapParts[0]) : 0;
-            if (chapParts.length > 2 || isNaN(chapsTotal) || isNaN(chapsRead)) {
+            if (chapParts.length > 2) {
                 addToast(
                     toasts,
                     "Enter chapters in the specified format",
                     "alert alert-error",
                 );
                 return;
+            }
+
+            if (isNaN(chapsRead)) {
+                chapsRead = null;
+            }
+            if (isNaN(chapsTotal)) {
+                chapsTotal = null;
             }
         }
 
@@ -94,13 +101,20 @@
                     ? parseInt(volParts[1])
                     : parseInt(volParts[0]);
             volsRead = volParts.length > 1 ? parseInt(volParts[0]) : 0;
-            if (volParts.length > 2 || isNaN(volsTotal) || isNaN(volsRead)) {
+            if (volParts.length > 2) {
                 addToast(
                     toasts,
                     "Enter volumes in the specified format",
                     "alert alert-error",
                 );
                 return;
+            }
+
+            if (isNaN(volsRead)) {
+                volsRead = null;
+            }
+            if (isNaN(volsTotal)) {
+                volsTotal = null;
             }
         }
 
