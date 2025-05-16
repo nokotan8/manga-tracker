@@ -2,6 +2,8 @@
 
 Web app for tracking manga reading progress. Name TBD.
 
+This repository contains the frontend. The backend can be found [here](https://github.com/nokotan8/manga-tracker-api)
+
 > [!IMPORTANT]
 > This project is 1. for fun and 2. a work in progress. Do not be surprised if something breaks.
 
@@ -30,6 +32,14 @@ npm run dev
 ```
 
 - Optionally, you can change the port by editing `vite.config.ts`
+
+## Screenshots
+
+| Light Mode | Dark Mode |
+| :------------------------------------------------------: | :--------------------------------------------------: |
+| List View ![List View](assets/list_view_light.png) | List View ![List View](assets/list_view_dark.png) |
+| Add Manga ![Add Manga Modal](assets/add_manga_light.png) | Add Manga ![Add Manga](assets/add_manga_dark.png) |
+| Edit Manga ![Edit Manga](assets/edit_manga_light.png) | Edit Manga ![Edit Manga](assets/edit_manga_dark.png) |
 
 ## Todo
 
