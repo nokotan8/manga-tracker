@@ -34,12 +34,6 @@
     });
     let newListName = $state("");
 
-    const listFilterClick = () => {
-        if (listFilterOpen) {
-            listFilterOpen = !listFilterOpen;
-        }
-    };
-
     const addList = async () => {
         if (!newListName) {
             addToast(toasts, "Please enter a list name", "alert alert-error");
@@ -78,10 +72,10 @@
     };
 </script>
 
-<div class="mb-3 md:hidden">
+<button class="mb-3 md:hidden">
     <ul class="w-35 menu bg-base-200 rounded-box">
         <li>
-            <details open={listFilterOpen} onclick={listFilterClick}>
+            <details open={listFilterOpen}>
                 <summary>{listName}</summary>
                 <li><a href="/mangalist/">All</a></li>
                 <li>
@@ -104,4 +98,4 @@
             </details>
         </li>
     </ul>
-</div>
+</button>
