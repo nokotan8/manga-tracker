@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 export const API_URL = "127.0.0.1:9292";
 export const HEADERS = {
@@ -6,7 +7,9 @@ export const HEADERS = {
 };
 
 export const logout = () => {
-    localStorage.setItem("username", "");
-    localStorage.setItem("token", "");
-    goto("/");
+    if (browser) {
+        localStorage.setItem("username", "");
+        localStorage.setItem("token", "");
+        goto("/");
+    }
 };

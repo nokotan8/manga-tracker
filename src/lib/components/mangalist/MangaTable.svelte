@@ -92,16 +92,16 @@
 </script>
 
 <div
-    class="overflow-x-auto rounded-lg shadow-sm bg-base-200 h-[80vh] md:w-140 lg:w-200 xl:w-260 2xl:w-320"
+    class="overflow-x-auto rounded-lg shadow-sm bg-base-200 h-[75vh] w-[90vw] sm: md:w-140 lg:w-200 xl:w-260 2xl:w-320"
 >
     <table class="table table-pin-rows">
         <thead>
             <tr>
                 <th>Title (JP)</th>
                 <th>Title (EN)</th>
-                <th>Chapters</th>
-                <th>Volumes</th>
-                <th>Pub. Status</th>
+                <th class="hidden md:table-cell">Chapters</th>
+                <th class="hidden md:table-cell">Volumes</th>
+                <th class="hidden md:table-cell">Pub. Status</th>
             </tr>
         </thead>
         <tbody>
@@ -117,13 +117,13 @@
                     >
                         <th>{entry.titleJP}</th>
                         <th>{entry.titleEN || ""}</th>
-                        <th
+                        <th class="hidden md:table-cell"
                             >{`${entry.chapsRead || "-"}/${entry.chaps || "-"}`}</th
                         >
-                        <th
+                        <th class="hidden md:table-cell"
                             >{`${entry.volsRead || "-"}/${entry.vols || "-"}`}</th
                         >
-                        <th>{entry.pubStatus}</th>
+                        <th class="hidden md:table-cell">{entry.pubStatus}</th>
                     </tr>
                 {/each}
             {/await}

@@ -54,7 +54,7 @@
     };
 </script>
 
-<div id="filters" class="flex flex-col flex-none gap-y-3 mt-3 w-40">
+<div id="filters" class="hidden flex-col flex-none gap-y-3 mt-3 w-40 md:flex">
     <div>
         Lists
         <ul class="w-full menu menu-active bg-base-100 rounded-box">
